@@ -7,7 +7,7 @@
       >
         {{ props.label }}
       </label>
-  
+
       <textarea
         v-if="!props.readonly"
         v-model="value"
@@ -19,55 +19,55 @@
         @blur="resolveInputWithError()"
         @input="valueHasChanged"
       />
-  
+
       <div v-else class="base-form__text-readonly">
         {{ value }}
       </div>
-  
+
       <p v-show="showInputWithError" class="base-form__error_message">
         {{ errorMessage }}
       </p>
     </div>
   </template>
-  
+
   <script setup lang="ts">
-  import { PropType, ref, watch } from 'vue'
-  
+  import { type PropType, ref, watch } from 'vue'
+
   const value = defineModel('value', { default: '' })
-  
+
   const showInputWithError = ref(false)
   const errorMessage = ref('')
-  
+
   // Props
   const props = defineProps({
     label: {
       type: String,
       required: true
     },
-  
+
     fieldName: {
       type: String,
       required: true
     },
-  
+
     rows: {
       type: Number,
       required: true,
       default: () => 1
     },
-  
+
     disabled: {
       type: Boolean,
       required: false,
       default: () => false
     },
-  
+
     readonly: {
       type: Boolean,
       required: false,
       default: () => false
     },
-  
+
     validator: {
       type: Function,
       required: false,
@@ -75,24 +75,24 @@
         return true
       }
     },
-  
+
     markAsError: {
       type: Object as PropType<{ apply: boolean; message: string }>,
       required: false,
       default: () => ({ apply: false, message: '' })
     }
   })
-  
+
   // Emits
   const emit = defineEmits<{
     (e: 'onChangeInputValue', payload: { fieldName: string; value: string }): void
   }>()
-  
+
   // Methods
-  
+
   const resolveInputWithError = () => {
     const res = props.validator(value.value)
-  
+
     if (res == true) {
       showInputWithError.value = false
       return
@@ -100,19 +100,19 @@
     showInputWithError.value = true
     errorMessage.value = res
   }
-  
+
   const valueHasChanged = (event: Event): void => {
     if (event.target == null) {
       return
     }
     const target = event.target as HTMLInputElement
-  
+
     emit('onChangeInputValue', {
       fieldName: props.fieldName,
       value: target.value
     })
   }
-  
+
   watch(
     () => props.markAsError,
     (newValue) => {
@@ -122,11 +122,10 @@
       } else resolveInputWithError()
     }
   )
-  
+
   defineExpose({
     resolveInputWithError
   })
   </script>
-  
+
   <style></style>
-  

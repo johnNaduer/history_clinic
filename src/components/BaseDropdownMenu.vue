@@ -2,8 +2,8 @@
   <div class="dropdown">
     <!-- Botón de activación -->
     <button>
-    <base-icon 
-    name="ChevronDownIcon" 
+    <base-icon
+    name="ChevronDownIcon"
     @click="toggleDropdown"
     class="pointer"
     type="outline" />
@@ -11,14 +11,14 @@
 
 
     <!-- Contenedor del menú con transición -->
- 
+
   </div>
   <Transition name="fade">
       <div v-if="isOpen" class="dropdown-menu">
         <ul>
-          <li 
-            v-for="option in options" 
-            :key="option.value" 
+          <li
+            v-for="option in options"
+            :key="option.value"
             @click="selectOption(option)"
             class="dropdown-item"
           >
@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps, defineEmits } from 'vue';
+import { ref } from 'vue';
 import BaseIcon from './BaseIcon.vue';
 
 

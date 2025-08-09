@@ -1,8 +1,11 @@
 <template>
   <div>
-    <h1>Product List</h1>
+    <h1 class="text-2xl">Product List</h1>
     <!-- Formulario para agregar un producto -->
-    <form @submit.prevent="addProduct">
+    <form
+      @submit.prevent="addProduct"
+      class="flex justify-around items-center gap-10 flex-wrap flex-grow"
+    >
       <h2>Add Product</h2>
       <div>
         <label for="product_name">Product Name:</label>
@@ -128,23 +131,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
 
 // Definición del tipo Product
 type Product = {
-  product_id: string
-  product_name: string
-  price: number
-  is_stock: boolean
-  categoryId: string
-}
+  product_id: string;
+  product_name: string;
+  price: number;
+  is_stock: boolean;
+  categoryId: string;
+};
 
 // Base URL para las solicitudes al backend
-const baseURL = 'http://localhost:3000/api/v1/products'
+const baseURL = 'http://localhost:3000/api/v1/products';
 
 // Lista reactiva para almacenar los productos
-const products = ref<Product[]>([])
+const products = ref<Product[]>([]);
 
 // Producto nuevo reactivo para el formulario de agregar
 const newProduct = ref<Omit<Product, 'product_id'>>({
@@ -152,95 +155,96 @@ const newProduct = ref<Omit<Product, 'product_id'>>({
   price: 0,
   is_stock: true,
   categoryId: '',
-})
+});
 
 // Producto seleccionado para edición
-const selectedProduct = ref<Product | null>(null)
+const selectedProduct = ref<Product | null>(null);
 
 // Función para obtener productos desde el backend
-async function fetchProducts() {
+const fetchProducts = async () => {
   try {
-    const response = await axios.get(baseURL)
-    products.value = response.data.products
+    console.log('Fetching products...');
+    // const response = await axios.get(baseURL);
+    // products.value = response.data.products;
   } catch (error) {
-    console.error('Error fetching products:', error)
+    console.error('Error fetching products:', error);
   }
-}
+};
 
 // Función para agregar un producto al backend
-async function addProduct() {
+const addProduct = async () => {
   try {
-    const response = await axios.post(baseURL, newProduct.value)
-    console.log('Product created:', response.data)
-    fetchProducts()
+    const response = await axios.post(baseURL, newProduct.value);
+    console.log('Product created:', response.data);
+    fetchProducts();
     // Reiniciar el formulario
     newProduct.value = {
       product_name: '',
       price: 0,
       is_stock: true,
       categoryId: '',
-    }
+    };
   } catch (error) {
-    console.error('Error adding product:', error)
+    console.error('Error adding product:', error);
   }
-}
+};
 
 // Función para seleccionar un producto para edición
-function selectProductForEdit(product: Product) {
-  console.log('Product selected for edit:', product)
-  selectedProduct.value = { ...product }
-  console.log('Selected product:', selectedProduct.value)
-}
+const selectProductForEdit = (product: Product) => {
+  console.log('Product selected for edit:', product);
+  selectedProduct.value = { ...product };
+  console.log('Selected product:', selectedProduct.value);
+};
 
 // Función para editar un producto en el backend
-async function editProduct() {
-  if (!selectedProduct.value) return
+const editProduct = async () => {
+  if (!selectedProduct.value) return;
 
   try {
     const response = await axios.put(
       `${baseURL}/${selectedProduct.value.product_id}`,
       selectedProduct.value,
-    )
-    console.log('Product updated:', response.data)
-    fetchProducts()
-    selectedProduct.value = null // Cerrar el formulario de edición
+    );
+    console.log('Product updated:', response.data);
+    fetchProducts();
+    selectedProduct.value = null; // Cerrar el formulario de edición
   } catch (error) {
-    console.error('Error editing product:', error)
+    console.error('Error editing product:', error);
   }
-}
+};
 
 // Función para cancelar la edición
-function cancelEdit() {
-  selectedProduct.value = null
-}
+const cancelEdit = () => {
+  selectedProduct.value = null;
+};
 
 // Función para exportar productos a Excel
-async function exportToExcel() {
+const exportToExcel = async () => {
   try {
     const response = await axios.get(
       'http://localhost:3000/api/v1/products/export',
       {
         responseType: 'blob', // Para manejar archivos binarios
       },
-    )
+    );
 
     // Crear un enlace para descargar el archivo
-    const url = window.URL.createObjectURL(new Blob([response.data]))
-    const link = document.createElement('a')
-    link.href = url
-    link.setAttribute('download', 'products.xlsx')
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'products.xlsx');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   } catch (error) {
-    console.error('Error exporting to Excel:', error)
+    console.error('Error exporting to Excel:', error);
   }
-}
+};
 
 // Obtener los productos al montar el componente
 onMounted(() => {
-  fetchProducts()
-})
+  fetchProducts();
+});
 </script>
 
 <style scoped>
@@ -254,5 +258,9 @@ form div {
 
 button {
   margin-right: 10px;
+}
+
+label {
+  @apply block;
 }
 </style>
