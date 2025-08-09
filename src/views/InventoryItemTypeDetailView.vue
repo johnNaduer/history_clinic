@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div class="justify-center items-center flex flex-col">
+   
      <base-card-collapse
       ref="itemTypeMainDetailCollapseRef"
-      title="MAIN DETAILS"
+      title="HISTORIA CLINICA DENTAL"
       :is-open="true"
       :isEditing="isEditingMainDetails"
       :isEditingPencil="true"
@@ -11,33 +12,48 @@
       @edit="handleMainDetailEdit"
       @cancel="handleMainDetailCancel"
     >
+
       <template #body-collapse>
-        <pre> hola mundo </pre>
-        <!-- <h1>Página actual: {{ route.path }}</h1> -->
-        <inventory-item-type-main-details
-          ref="itemTypeMainDetailForm"
-          :data="itemTypeData"
+      <RegisterPatientForm
+        ref="itemTypeMainDetailForm"
+        :data="itemTypeData"
+        :isEditing="isEditingMainDetails"
+        @successfullyCreated="handleItemTypeSuccessfullyCreated"
+        @successfullyUpdated="handleItemTypeSuccessfullyCreated"
+      />
+    
+      
+      <!-- <RecordHistory
+        ref="itemTypeRecordHistory"
+        :data="itemTypeData"
+        :isEditing="isEditingMainDetails"
+        @successfullyCreated="handleItemTypeSuccessfullyCreated"
+        @successfullyUpdated="handleItemTypeSuccessfullyCreated"
+      /> -->
+      </template>
+    </base-card-collapse>
+
+    
+        <!-- <register-consultation
+          ref="itemTypeAssignmentsForm"
           :isEditing="isEditingMainDetails"
           @successfullyCreated="handleItemTypeSuccessfullyCreated"
           @successfullyUpdated="handleItemTypeSuccessfullyCreated"
-          @categoriesLoaded="handleCategoriesLoaded"
-          @failed-created="handleFailedCreated"
-          @failed-updated="handleFailedUpdated"
-          @failed-request-created="handleFailedRequestCreated"
-        />
-
-      </template>
-    </base-card-collapse>
+        /> -->
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import BaseCardCollapse from '@/components/BaseCardCollapse.vue'
-import InventoryItemTypeMainDetails, {
-  type ItemType
+import{ type ItemType
 } from '@/components/item-type/InventoryItemTypeMainDetails.vue'
+import RegisterConsultation from '@/components/register-patient/RegisterConsultation.vue'
+import RegisterPatientForm from '@/components/register-patient/RegisterPatientForm.vue'
+import RecordHistory from '@/components/register-patient/RecordHistory.vue'
 import { useRouter} from 'vue-router'
+
+
 
 // const route = useRoute()
 
@@ -115,8 +131,6 @@ const handleItemTypeSuccessfullyCreated = async (payload: { itemTypeId: string }
   itemTypeAssignmentsForm.value?.hiddenLoading()
   itemTypeMainDetailForm.value?.hiddenLoading()
 }
-
-
 
 
 </script>

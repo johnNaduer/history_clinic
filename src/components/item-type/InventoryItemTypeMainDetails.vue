@@ -30,6 +30,8 @@
   import InventoryItemTypeMainDetailsView from '@/components/item-type/InventoryItemTypeMainDetailsView.vue'
   import InventoryItemTypeMainDetailsForm from '@/components/item-type/InventoryItemTypeMainDetailsForm.vue'
   import { getInventoryData } from '@/composables/InventoryApiClient'
+  import { useToastStore } from '@/stores/toast'
+  import type { IToast } from '@/types/toast'
   
   // Stores
   const toasterStore = useToastStore()
