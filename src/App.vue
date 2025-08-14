@@ -27,7 +27,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </div>
   </div>
   </main>
-  
+
 
 
 </template>
@@ -48,7 +48,8 @@ body {
   box-shadow:
     var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
   border-radius: 0.5rem;
-  width: 1800px;
+  width: 100%;
+  height: auto;
 }
 
 .container-base-card {
@@ -60,6 +61,9 @@ body {
 .collapsed-container {
   background-color: #ffffff;
   border-radius: 7px;
+  width: 100%;
+  max-width: 1800px;
+  height: auto;
 }
 
 </style>

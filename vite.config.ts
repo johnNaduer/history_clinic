@@ -14,9 +14,10 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss()
   ],
-  resolve: {server: {
-    port: 5174, // Cambia el puerto aquí
+  server: {
+    port: 7070, // Change the port here
   },
+  resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
