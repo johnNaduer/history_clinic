@@ -26,12 +26,9 @@
     </div>
   </button>
 </template>
-
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
-
 export type ButtonType = 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'cancel'
-
 const props = defineProps({
   label: {
     type: String,
